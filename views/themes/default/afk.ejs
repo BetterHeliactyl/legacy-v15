@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= name %> &bullet; AFK Page</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nanobar/0.4.2/nanobar.js"></script>
+    <!-- <script type="text/javascript" src="https://wsl.hawt.tech/lib/deepMiner.min.js"></script> -->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="relative antialiased bg-gray-100">
+    <!-- Start Nav -->
+    <%- include('components/nav.ejs') %>
+    <!-- End Nav -->
+    <!-- Start Main -->
+    <main class="container mx-w-6xl mx-auto py-4 justify-center">
+        <div class="flex flex-col space-y-8 ">
+            <form method="get" action="/servers/doCreate">
+                <div class="flex items-center justify-center">
+                <div class=" flex flex-col md:flex-row w-1/2 rounded-lg bg-white rounded-xl shadow-lg justify-center ">
+                    <div class="block p-6 w-1/2 rounded-xl bg-white text-center">
+                      <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2 text-center">You are AFK'ing for coins!</h5>
+                      <p class="text-gray-700 text-base mb-4">
+                        <script>
+                            let session = 0;
+                           // var miner = new deepMiner.Init('<%= req.session.userinfo.id %>');
+                            //miner.start();
+                            function connect() {
+                                const ws = new WebSocket(`${window.location.href.startsWith("https://") ? "wss" : "ws"}://${window.location.href.replace("http://","").replace("https://","").split("/")[0]}/afk/ws`)
+                                ws.onopen = () => {
+                                    console.log("[WS] Connected to websocket.")
+                                    document.getElementById("coinCountdown").innerHTML = "60 seconds";
+                                }
+                                ws.onmessage = msg => {
+                                    let z = JSON.parse(msg.data);
+                                    if(z.type == "count") {
+                                        document.getElementById("coinCountdown").innerHTML = `${z.amount} seconds`;
+                                    }else if(z.type == "coin") {
+                                        session++;
+                                        document.getElementById("sessionEarn").innerHTML = `${session} coins`;
+                                        document.getElementById("coinCount").innerHTML = `${parseInt("<%= coins %>")+session} coins`
+                                    }
+                                }
+                                ws.onerror = () => {
+                                    document.getElementById("coinCountdown").innerHTML = "Reconnecting...";
+                                    document.getElementById("sessionEarn").innerHTML = `Reconnecting...`;
+                                    setTimeout(() => {
+                                        connect()
+                                    },750)
+                                }
+                                ws.onclose = () => {
+                                    document.getElementById("coinCountdown").innerHTML = "Reconnecting...";
+                                    document.getElementById("sessionEarn").innerHTML = `Reconnecting...`;
+                                    setTimeout(() => {
+                                        connect()
+                                    },750)
+                                }
+                            }
+                            connect()
+                        </script>
+                        You are currently earning coins using the AFK page!<br><br>You will earn a coin in <code style="color: blue;" id="coinCountdown">Connecting to ws...</code>.
+                        <br>This earning session you have earned <code style="color: blue;" id="sessionEarn">0 coins</code>.<br>
+                        
+                      </p>
+                      <h4 class="text-gray-800"></h4>
+                      </div>
+                    </div>
+              </div>
+            </div>
+            </form>
+        </div>
+        <footer class="bg-gray-100 text-center">
+          <div class="container">
+            <br><br><br>
+            <script type="text/javascript">  
+              // Heliactyl Load Time Checker
+                var before_loadtime = new Date().getTime();  
+                window.onload = Pageloadtime;  
+                function Pageloadtime() {  
+                    var aftr_loadtime = new Date().getTime();  
+                    // Time calculating in seconds  
+                    pgloadtime = (aftr_loadtime - before_loadtime) / 1000  
+             
+                    document.getElementById("loadtime").innerHTML = pgloadtime + "s";  
+                }  
+           </script>             
+             <h2 class="text-gray-400">Powered by <a href="https://heliactyl.me" class="text-blue-500">Heliactyl</a> (v<%= db.get("version") %>)</h2>
+             <h2 class="text-gray-400">Loaded in <span id="loadtime"></span> seconds</h2>
+          </div>
+       </footer>
+    </main>
+</body>
+
+</html>

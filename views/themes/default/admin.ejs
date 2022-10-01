@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= name %> &bullet; Admin</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="relative antialiased bg-gray-100">
+    <!-- Start Nav -->
+    <%- include('components/nav.ejs') %>
+    <!-- End Nav -->
+    <!-- Start Main -->
+    <main class="container mx-w-6xl mx-auto py-4">
+        <div class="flex flex-col space-y-8">
+          <% if(req.query.success) { %>
+            <div class="bg-blue-500 rounded-lg py-5 px-6 mb-4 text-base font-medium shadow-xl text-blue-100 mb-3" role="alert">
+                <%= decodeURIComponent(req.query.success) %>
+              </div>
+            <% } %>
+            <div class="flex flex-col md:flex-row md:max-w-full rounded-lg bg-white rounded-xl shadow-lg">
+                <div class="block p-6 md:max-w-full rounded-xl bg-white">
+                  <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Version</h5>
+                  <p class="text-gray-700 text-base mb-4">
+                    <p id="latestversion"><span>Fetching...</span></p>
+                    <script>
+                        fetch("https://b4dsk.github.io/versionapi/")
+                            .then(res => Promise.resolve(res.json()).then(ver => {
+                                let currentver = "<%= db.get('version') %>";
+                                if (ver.version == currentver) {
+                                    document.getElementById("latestversion").innerHTML = `<span>You are running Heliactyl version <code style="color: blue" >v${currentver}</code>. Thank you for keeping your Heliactyl instance updated!</span>`;
+                                } else if (ver.prerelease == currentver) {
+                                    document.getElementById("latestversion").innerHTML = `<span>You are running Heliactyl version <code style="color: blue">v${currentver}</code>. Thank you for keeping your Heliactyl instance updated!</span>`;
+                                } else {
+                                    document.getElementById("latestversion").innerHTML = `<span>Uh oh! Heliactyl is not up to date! The latest version is <code style="color: blue;" >v${ver.version}</code> and you are currently running version <code style="color: blue" >v<%= settings.version %></code>.</span>`;
+                                };
+                            }));
+                    </script>
+                   </p>
+                   <br>
+                   <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Add Resources</h5>
+                   <p class="text-gray-700 text-base mb-4">
+                     Add resources to a user.
+                   </p>
+                   <label for="floatingInput" class="text-gray-700 text-center">User ID:</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" id="userIDExtra" name="ram" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="000000000000000000">
+                   </div>
+                   <label for="floatingInput" class="text-gray-700 text-center">CPU (%):</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" name="ram" id="cpuAmt" value="0" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="100">
+                   </div>
+                   <label for="floatingInput" class="text-gray-700 text-center">RAM (MB):</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" name="ram" id="ramAmt" value="0" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="2048">
+                   </div>
+                   <label for="floatingInput" class="text-gray-700 text-center">Disk (MB):</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" name="ram" id="diskAmt" value="0" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="10240">
+                   </div>
+                   <label for="floatingInput" class="text-gray-700 text-center">Server Slots:</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" id="slotAmt" value="0" name="ram" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="4">
+                   </div>
+                   <br>
+                   <button type="button" onclick="addRes()" class="justify-center text-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add Resources</button>
+                   <br><br>
+                   <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Add Coins</h5>
+                   <p class="text-gray-700 text-base mb-4">
+                     Add coins to a user.
+                   </p>
+                   <label for="floatingInput" class="text-gray-700 text-center">User ID:</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" id="userIDExtra2" name="ram" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="000000000000000000">
+                   </div>
+                   <label for="floatingInput" class="text-gray-700 text-center">Coins:</label>
+                   <div class="form-floating mb-3 xl:w-86">
+                     <input type="number" name="ram" id="coinsAmt" value="0" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="100">
+                   </div>
+                   <br>
+                   <button type="button" onclick="addCoins()" class="justify-center text-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add Coins</button>
+                </div>
+                <script>
+                  function addRes() {
+                    let ram = document.getElementById("ramAmt").value;
+                    let cpu = document.getElementById("cpuAmt").value;
+                    let disk = document.getElementById("diskAmt").value;
+                    let slots = document.getElementById("slotAmt").value;
+                    axios.get("/api/"+document.getElementById("userIDExtra").value+"/addExtra?ram="+ram+"&cpu="+cpu+"&disk="+disk+"&servers="+slots)
+                    alert("Done!")
+                  }
+
+                  function addCoins() {
+                    let coins = document.getElementById("coinsAmt").value;
+                    axios.get("/api/"+document.getElementById("userIDExtra2").value+"/addCoins?coins="+coins)
+                    alert("Done!")
+                  }
+                </script>
+              </div>
+        </div>
+        <footer class="bg-gray-100 text-center">
+          <div class="container">
+            <br><br><br>
+            <script type="text/javascript">  
+              // Heliactyl Load Time Checker
+                var before_loadtime = new Date().getTime();  
+                window.onload = Pageloadtime;  
+                function Pageloadtime() {  
+                    var aftr_loadtime = new Date().getTime();  
+                    // Time calculating in seconds  
+                    pgloadtime = (aftr_loadtime - before_loadtime) / 1000  
+             
+                    document.getElementById("loadtime").innerHTML = pgloadtime + "s";  
+                }  
+           </script>             
+             <h2 class="text-gray-400">Powered by <a href="https://heliactyl.me" class="text-blue-500">Heliactyl</a> (v<%= db.get("version") %>)</h2>
+             <h2 class="text-gray-400">Loaded in <span id="loadtime"></span> seconds</h2>
+          </div>
+       </footer>
+    </main>
+</body>
+
+</html>

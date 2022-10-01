@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= name %> &bullet; Store</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="relative antialiased bg-gray-100">
+    <!-- Start Nav -->
+    <%- include('components/nav.ejs') %>
+    <!-- End Nav -->
+    <!-- Start Main -->
+    <main class="container mx-w-6xl mx-auto py-4">
+        <div class="flex flex-col space-y-8">
+          <% if(req.query.success) { %>
+            <div class="bg-blue-500 rounded-lg py-5 px-6 mb-4 text-base font-medium shadow-xl text-blue-100 mb-3" role="alert">
+                <%= decodeURIComponent(req.query.success) %>
+              </div>
+            <% } %>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div class="flex flex-col">
+                            <h3 class="text-xl text-gray-600 tracking-wide">Buy 100% CPU for 512 coins</h3><br>
+                            <a href="../store/buyCPU?amount=512" class="w-1/2 rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Buy</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div class="flex flex-col">
+                            <h3 class="text-xl text-gray-600 tracking-wide">Buy 1024MB RAM for 512 coins</h3><br>
+                            <a href="../store/buyRAM?amount=1024" class="w-1/2 rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Buy</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div class="flex flex-col">
+                            <h3 class="text-xl text-gray-600 tracking-wide">Buy 5120MB Disk for 1280 coins</h3><br>
+                            <a href="../store/buyDisk?amount=5120" class="w-1/2 rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Buy</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div class="flex flex-col">
+                            <h3 class="text-xl text-gray-600 tracking-wide">Buy 2 Server Slots for 512 coins</h3><br>
+                            <a href="../store/buySlots?amount=2" class="w-1/2 rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Buy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-gray-100 text-center">
+          <div class="container">
+            <br><br><br>
+            <script type="text/javascript">  
+              // Heliactyl Load Time Checker
+                var before_loadtime = new Date().getTime();  
+                window.onload = Pageloadtime;  
+                function Pageloadtime() {  
+                    var aftr_loadtime = new Date().getTime();  
+                    // Time calculating in seconds  
+                    pgloadtime = (aftr_loadtime - before_loadtime) / 1000  
+             
+                    document.getElementById("loadtime").innerHTML = pgloadtime + "s";  
+                }  
+           </script>             
+             <h2 class="text-gray-400">Powered by <a href="https://heliactyl.me" class="text-blue-500">Heliactyl</a> (v<%= db.get("version") %>)</h2>
+             <h2 class="text-gray-400">Loaded in <span id="loadtime"></span> seconds</h2>
+          </div>
+       </footer>
+    </main>
+</body>
+
+</html>

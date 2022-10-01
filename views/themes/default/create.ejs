@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= name %> &bullet; Create Server</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nanobar/0.4.2/nanobar.js"></script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="relative antialiased bg-gray-100">
+    <!-- Start Nav -->
+    <%- include('components/nav.ejs') %>
+    <!-- End Nav -->
+    <!-- Start Main -->
+    <main class="container mx-w-6xl mx-auto py-4">
+        <div class="flex flex-col space-y-8">
+            <form method="get" action="/servers/doCreate">
+              <div class="flex items-center justify-center">
+               <div class="flex flex-col md:flex-row w-1/2 rounded-lg bg-white rounded-xl shadow-lg justify-center">
+                <div class="items-center justify-center block p-6 w-1/2 rounded-xl bg-white">
+                  <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2 text-center">Create Server</h5>
+                  <p class="text-gray-700 text-base mb-4 text-center">
+                    Create a brand new server.
+                  </p>
+                  <center>
+                  <label for="floatingInput1" class="text-gray-700 text-center">Name:</label>
+                  <div class="form-floating mb-3 xl:w-86">
+                    <input type="text" name="name" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput1" placeholder="Example">
+                  </div>
+                    <label for="floatingInput" class="text-gray-700 text-center">Egg:</label>
+                    <div class="form-floating mb-3 xl:w-86">
+                      <select name="egg" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
+                        <% for(let i = 0; i < eggs.length; i++) { %>
+                            <option value="<%= eggs[i].id %>"><%= eggs[i].name %></option>
+                            <% } %>
+                      </select>
+                    </div>
+                    <label for="floatingInput" class="text-gray-700 text-center">Location:</label>
+                    <div class="form-floating mb-3 xl:w-86">
+                      <select name="location" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
+                        <% for(let i = 0; i < locs.length; i++) { %>
+                        <option value="<%= locs[i].id %>"><%= locs[i].name %></option>
+                        <% } %>
+                      </select>
+                    </div>
+                    <label for="floatingInput" class="text-gray-700 justify-center">CPU (%):</label>
+                    <div class="form-floating mb-3 xl:w-86">
+                      <input type="number" name="cpu" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="100">
+                    </div>
+                    <label for="floatingInput" class="text-gray-700 text-center">RAM (MB):</label>
+                    <div class="form-floating mb-3 xl:w-86">
+                      <input type="number" name="ram" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="2048">
+                    </div>
+                    <label for="floatingInput" class="text-gray-700 text-center">Disk (MB):</label>
+                    <div class="form-floating mb-3 xl:w-86">
+                      <input type="number" name="disk" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="10240">
+                    </div><br>
+                    <button type="submit" class="justify-center text-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Create</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+        </div>
+        <footer class="bg-gray-100 text-center">
+          <div class="container">
+            <br><br><br>
+            <script type="text/javascript">  
+              // Heliactyl Load Time Checker
+                var before_loadtime = new Date().getTime();  
+                window.onload = Pageloadtime;  
+                function Pageloadtime() {  
+                    var aftr_loadtime = new Date().getTime();  
+                    // Time calculating in seconds  
+                    pgloadtime = (aftr_loadtime - before_loadtime) / 1000  
+             
+                    document.getElementById("loadtime").innerHTML = pgloadtime + "s";  
+                }  
+           </script>             
+             <h2 class="text-gray-400">Powered by <a href="https://heliactyl.me" class="text-blue-500">Heliactyl</a> (v<%= db.get("version") %>)</h2>
+             <h2 class="text-gray-400">Loaded in <span id="loadtime"></span> seconds</h2>
+          </div>
+       </footer>
+    </main>
+</body>
+
+</html>

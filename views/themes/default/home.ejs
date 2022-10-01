@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= name %> &bullet; Home</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="relative antialiased bg-gray-100">
+    <!-- Start Nav -->
+    <%- include('components/nav.ejs') %>
+    <!-- End Nav -->
+    <!-- Start Main -->
+    <main class="container mx-w-6xl mx-auto py-4">
+        <div class="flex flex-col space-y-8">
+          <% if(req.query.success) { %>
+            <div class="bg-blue-500 rounded-lg py-5 px-6 mb-4 text-base font-medium shadow-xl text-blue-100 mb-3" role="alert">
+                <%= decodeURIComponent(req.query.success) %>
+              </div>
+            <% } %>
+            <%- include('components/cards.ejs') %>
+            <div class="flex flex-col md:flex-row md:max-w-full rounded-lg bg-white rounded-xl shadow-lg">
+                <div class="block p-6 md:max-w-full rounded-xl bg-white">
+                  <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Your Servers</h5>
+                  <p class="text-gray-700 text-base mb-4">
+                    View, manage, delete your servers here.
+                  </p>
+                  <p class="text-gray-700 text-base mb-4">
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto w-full">
+                          <div class="py-2 inline-block w-full sm:px-6 lg:px-8">
+                            <div class="overflow-hidden">
+                              <table class="min-w-full">
+                                <thead class="border-b">
+                                  <tr>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                      Name
+                                    </th>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                      RAM
+                                    </th>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        Disk
+                                      </th>
+                                      <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        CPU
+                                      </th>
+                                      <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        Manage
+                                      </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <% if(servers.length == 0) { %>
+                                        <tr class="border-b">
+                                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        <p class="text-gray-600 font-medium">You have no servers, <a href="../servers/create" class="text-blue-500 hover:text-blue-600">click here</a> to create one!</p>
+                                    </td>
+                                        </tr>
+                                    <% } %>
+                                    <% for(let i = 0; i < servers.length; i++) { %>
+                                        <tr class="border-b">
+                                            <td class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                              <%= servers[i].attributes.name %>
+                                            </td>
+                                            <td class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                                <%= servers[i].attributes.limits.memory %>MB
+                                            </td>
+                                            <td class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                                <%= servers[i].attributes.limits.disk %>MB
+                                              </td>
+                                              <td class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                                <%= servers[i].attributes.limits.cpu %>%
+                                              </td>
+                                              <td class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                                <a href="https://<%= JSON.parse(db.get('settings-panel')).url %>/server/<%= servers[i].attributes.identifier %>" class="rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Link</a>
+                                                <a href="/servers/delete?id=<%= servers[i].attributes.identifier %>" class="rounded-md bg-red-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Delete</a>
+                                              </td>
+                                          </tr>
+                                    <% }  %>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                   </p>
+                </div>
+              </div>
+        </div>
+        <footer class="bg-gray-100 text-center">
+          <div class="container">
+            <br><br><br>
+            <script type="text/javascript">  
+              // Heliactyl Load Time Checker
+                var before_loadtime = new Date().getTime();  
+                window.onload = Pageloadtime;  
+                function Pageloadtime() {  
+                    var aftr_loadtime = new Date().getTime();  
+                    // Time calculating in seconds  
+                    pgloadtime = (aftr_loadtime - before_loadtime) / 1000  
+             
+                    document.getElementById("loadtime").innerHTML = pgloadtime + "s";  
+                }  
+           </script>             
+             <h2 class="text-gray-400">Powered by <a href="https://heliactyl.me" class="text-blue-500">Heliactyl</a> (v<%= db.get("version") %>)</h2>
+             <h2 class="text-gray-400">Loaded in <span id="loadtime"></span> seconds</h2>
+          </div>
+       </footer>
+    </main>
+</body>
+
+</html>
