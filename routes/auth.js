@@ -94,7 +94,7 @@ router.get("/callback", async(req, res) => {
                     req.session.resources = settings.resources;
                     req.session.loggedin = true;
                     let newPass = makeid(8)
-                    let zee = await axios.patch("https://"+settings.panel.url+"/api/application/users/"+ptrreg.data.attributes.id,{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator,"language":"en","password":newPass},{headers:{'Authorization':`Bearer ${settings.panel.key}`}})
+                    let zee = await axios.patch("https://"+settings.panel.url+"/api/application/users/"+usrList.data.data[0].attributes.id,{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator,"language":"en","password":newPass},{headers:{'Authorization':`Bearer ${settings.panel.key}`}})
                     db.set("user-"+userinfo.id,JSON.stringify(info));
                     db.set(`pass-${userinfo.id}`,`${newPass}`)
                     db.set(`coins-${userinfo.id}`,JSON.stringify({coins:0}))
