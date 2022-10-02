@@ -65,7 +65,7 @@ router.get("/callback", async(req, res) => {
             if(db.get(`user-${userinfo.id}`) == undefined) {
                 // Create Account
                 let usrList = await axios.get("https://"+settings.panel.url+"/api/application/users?include=servers&filter[email]="+encodeURIComponent(userinfo.email),{headers:{'Authorization':`Bearer ${settings.panel.key}`}});
-                if(usrList.length < 1) {
+                if(usrList.data.data.length < 1) {
                     axios.post("https://"+settings.panel.url+"/api/application/users",{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator},{headers:{'Authorization':`Bearer ${settings.panel.key}`}}).then(async ptrreg => {
                     let servers = await axios.get("https://"+settings.panel.url+"/api/application/users?include=servers&filter[email]="+encodeURIComponent(userinfo.email),{headers:{'Authorization':`Bearer ${settings.panel.key}`}});
                     let info = {
