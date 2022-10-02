@@ -94,8 +94,10 @@
         </button>
         <div x-show="open" x-transition class="absolute top-14 left-0 right-0 w-full bg-white rounded-md border">
             <ul class="p-4">
-                <li><a href="../panel/home" class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200">Home</a></li><br>
-                <li><a href="../servers/create" class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200">Create Server</a></li><br>
+            <li><a href="../panel/home" class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200">Home</a></li>
+            <li><a href="../panel/creds" class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200">Panel Credentials</a></li>
+            <li><a href="../servers/create" class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200">Create Server</a></li>
+            <% if(admin == true) { %><li><a href="../admin/admin" class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200">Admin</a></li><% } %>
                 <li class="relative" x-data="{ open: false }">
                     <a x-on:click="open = !open" x-on:click.outside="open = false" href="#"
                         class="px-2 xl:px-4 py-2 text-gray-600 rounded-md hover:bg-gray-200 flex gap-2 items-center">
