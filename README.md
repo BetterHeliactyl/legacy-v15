@@ -38,11 +38,11 @@ server {
 }
 server {
     listen 443 ssl http2;
-location /afkwspath {
+location /afk/ws {
   proxy_http_version 1.1;
   proxy_set_header Upgrade $http_upgrade;
   proxy_set_header Connection "upgrade";
-  proxy_pass "http://localhost:<port>/afkwspath";
+  proxy_pass "http://localhost:<port>/afk/ws";
 }
     
     server_name <domain>;
