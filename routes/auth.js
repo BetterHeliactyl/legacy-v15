@@ -64,7 +64,9 @@ router.get("/callback", async(req, res) => {
             let userinfo = d;
             if(db.get(`user-${userinfo.id}`) == undefined) {
                 // Create Account
-                axios.post("https://"+settings.panel.url+"/api/application/users",{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator},{headers:{'Authorization':`Bearer ${settings.panel.key}`}}).then(async ptrreg => {
+                let usrList = await axios.get("https://"+settings.panel.url+"/api/application/users?include=servers&filter[email]="+encodeURIComponent(userinfo.email),{headers:{'Authorization':`Bearer ${settings.panel.key}`}});
+                if(usrList.length == 0) {
+                    axios.post("https://"+settings.panel.url+"/api/application/users",{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator},{headers:{'Authorization':`Bearer ${settings.panel.key}`}}).then(async ptrreg => {
                     let servers = await axios.get("https://"+settings.panel.url+"/api/application/users?include=servers&filter[email]="+encodeURIComponent(userinfo.email),{headers:{'Authorization':`Bearer ${settings.panel.key}`}});
                     let info = {
                         id:ptrreg.data.attributes.id,
@@ -85,6 +87,18 @@ router.get("/callback", async(req, res) => {
                 }).catch(e => {
                     res.send("An error occured while creating your account. Please try again later.")
                 })
+                }else{
+                    req.session.pterod = usrList.data.data[0].attributes;
+                    req.session.pter = usrList.data.data[0].attributes.id;
+                    req.session.servers = usrList.data.data[0].attributes.relationships.servers.data;
+                    req.session.resources = settings.resources;
+                    req.session.loggedin = true;
+                    let newPass = makeid(8)
+                    let zee = await axios.patch("https://"+settings.panel.url+"/api/application/users/"+ptrreg.data.attributes.id,{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator,"language":"en","password":newPass},{headers:{'Authorization':`Bearer ${settings.panel.key}`}})
+                    db.set("user-"+userinfo.id,JSON.stringify(info));
+                    db.set(`pass-${userinfo.id}`,`${newPass}`)
+                    db.set(`coins-${userinfo.id}`,JSON.stringify({coins:0}))
+                }
             }else{
                 let z = JSON.parse(db.get(`user-${userinfo.id}`));
                 req.session.pter = z.id;
