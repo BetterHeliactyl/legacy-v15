@@ -66,5 +66,6 @@ app.get("*", async(req, res) => {
 })
 
 console.log(chalk.blue("HELIACTYL | Instance successfully started!"))
-console.log(chalk.blue("HELIACTYL | You are running version 15.0.0-beta1"))
+console.log(chalk.blue("HELIACTYL | You are running version 15.0.0-beta2"))
+console.log(chalk.green("WS | Heliactyl Webserver started!"))
 app.listen(parseInt(port))
