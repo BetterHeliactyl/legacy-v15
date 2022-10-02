@@ -17,7 +17,7 @@ We cannot force you to keep the "Powered by Heliactyl" in the footer, but please
 
 Warning: You need Pterodactyl already set up on a domain for Heliactyl to work
 
-1. Upload the file above onto a Pterodactyl NodeJS server [Download the egg from Parkervcp's GitHub Repository](https://github.com/parkervcp/eggs/tree/master/bots/discord/discord.js)
+1. Upload the file above onto a Pterodactyl NodeJS server [Download the egg from Parkervcp's GitHub Repository](https://github.com/parkervcp/eggs/blob/master/generic/nodejs/egg-node-js-generic.json)
 2. Unarchive the file and set the server to use NodeJS 17
 3. Configure webserver.json to use the server's port
 4. Start the server and open the server's IP in your browser and configure the dashboard settings
