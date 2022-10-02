@@ -18,7 +18,7 @@ const wssettings = require("./webserver.json")
 let port = JSON.parse(fs.readFileSync("./webserver.json")).port;
 
 // Set Heliactyl release version
-db.set("version","15.0.0-beta3")
+db.set("version","15.0.0-beta4")
 
 app.set("view engine","ejs")
 app.set("views","views/themes")
