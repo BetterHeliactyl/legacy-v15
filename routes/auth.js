@@ -88,16 +88,23 @@ router.get("/callback", async(req, res) => {
                     res.send("An error occured while creating your account. Please try again later.")
                 })
                 }else{
+                    console.log(usrList.data.data)
                     req.session.pterod = usrList.data.data[0].attributes;
                     req.session.pter = usrList.data.data[0].attributes.id;
                     req.session.servers = usrList.data.data[0].attributes.relationships.servers.data;
                     req.session.resources = settings.resources;
                     req.session.loggedin = true;
+                    let info = {
+                        id:usrList.data.data[0].attributes.id,
+                        uuid:usrList.data.data[0].attributes.uuid,
+                        userinfo:userinfo
+                    }
                     let newPass = makeid(8)
                     let zee = await axios.patch("https://"+settings.panel.url+"/api/application/users/"+usrList.data.data[0].attributes.id,{"email":userinfo.email,"username":userinfo.id,"first_name":userinfo.username,"last_name":userinfo.discriminator,"language":"en","password":newPass},{headers:{'Authorization':`Bearer ${settings.panel.key}`}})
                     db.set("user-"+userinfo.id,JSON.stringify(info));
                     db.set(`pass-${userinfo.id}`,`${newPass}`)
                     db.set(`coins-${userinfo.id}`,JSON.stringify({coins:0}))
+                    res.redirect("/panel/home")
                 }
             }else{
                 let z = JSON.parse(db.get(`user-${userinfo.id}`));
