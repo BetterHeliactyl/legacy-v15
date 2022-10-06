@@ -37,7 +37,9 @@ module.exports = {
                     let thongv = data2.data.data[ii].attributes.relationships.variables.data[iii].attributes.default_value;
                     envs[thong] = thongv;
                 }
+                if(!data2.data.data[ii].attributes.name.startsWith("!")) {
                 eggs.push({id:data2.data.data[ii].attributes.id,environment:envs,name:data2.data.data[ii].attributes.name,docker_image:data2.data.data[ii].attributes.docker_image,startup:data2.data.data[ii].attributes.startup})
+                }
             }
         }
         console.log(chalk.yellow("PANEL | Fetched eggs from the Panel"))
