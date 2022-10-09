@@ -24,10 +24,10 @@ app.set("view engine","ejs")
 app.set("views","views/themes")
 app.set('trust proxy', 1)
 app.use(session({
-  secret: 'keyboard cat',
+  secret: require('./handler/functions').randString(),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: true }
 }))
 let settings = {
     panel:{
