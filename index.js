@@ -6,6 +6,7 @@
 //
 
 const express = require('express')
+const limit = require('express-limit').limit;
 var session = require('express-session')
 const chalk = require("chalk")
 const db = require('./handler/DB')
@@ -28,6 +29,10 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
+}))
+app.use(limit({
+    max:    5,
+    period: 4 * 1000
 }))
 let settings = {
     panel:{
