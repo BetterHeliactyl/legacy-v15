@@ -20,6 +20,7 @@
     "express-ws": "^5.0.2",
     "fs": "^0.0.1-security",
     "mysql2": "^2.3.3",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "express-limit": "^0.1.0"
   }
 }
