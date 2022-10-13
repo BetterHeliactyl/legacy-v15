@@ -29,6 +29,11 @@ Warning: You need Pterodactyl already set up on a domain for Heliactyl to work
 10. Paste the configuration at the bottom of this and replace with the IP of the pterodactyl server including the port and with the domain you want your dashboard to be hosted on.
 11. Run `systemctl restart nginx` and try open your domain.
 
+# One Line Installer:
+```
+apt update -y && apt install npm nodejs -y && npm i n -g && n stab;e && PATH="$PATH" && git clone https://github.com/BetterHeliactyl/Heliactyl.git && cd Heliactyl && npm i && node .
+```
+
 # Nginx Proxy Config
 ```Nginx
 server {
