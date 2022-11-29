@@ -16,7 +16,7 @@ router.ws("/ws", function(ws, req) {
             if(time <= 0) {
                 time = 60;
                 ws.send(JSON.stringify({"type":"coin"}))
-                let r = JSON.parse(db.get(`coins-${req.params.id}`)).coins + 1;
+                let r = JSON.parse(db.get(`coins-${req.session.userinfo.id}`)).coins + 1;
                 db.set(`coins-${req.session.userinfo.id}`,{coins:r})
             }
             ws.send(JSON.stringify({"type":"count","amount":time}))
