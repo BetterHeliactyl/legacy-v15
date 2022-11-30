@@ -19,7 +19,7 @@ const wssettings = require("./webserver.json")
 let port = JSON.parse(fs.readFileSync("./webserver.json")).port;
 
 // Set Heliactyl release version
-db.set("version","1.15.0-beta5")
+db.set("version","1.15.0-beta6")
 
 app.set("view engine","ejs")
 app.set("views","views/themes")
@@ -71,6 +71,6 @@ app.get("*", async(req, res) => {
 })
 
 console.log(chalk.blue("HELIACTYL | Instance successfully started!"))
-console.log(chalk.blue("HELIACTYL | You are running version 15.0.0-beta2"))
+console.log(chalk.blue("HELIACTYL | You are running version 1.15.0-beta6"))
 console.log(chalk.green("WS | Heliactyl Webserver started!"))
 app.listen(parseInt(port))
