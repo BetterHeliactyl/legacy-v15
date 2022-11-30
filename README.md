@@ -2,7 +2,7 @@
 
 <hr>
 
-# Heliactyl v15
+# Heliactyl v1.15 (previously v15)
 
 Launch a free hosting service using Heliactyl as your dashboard.
 Learn how to setup/install it below.
