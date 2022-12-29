@@ -2,8 +2,9 @@
 
 <hr>
 
-# Heliactyl v1.15 (previously v15)
+# Heliactyl v15 (Legacy)
 
+This release line is no longer supported. Please upgrade to Heliactyl v17.
 Launch a free hosting service using Heliactyl as your dashboard.
 Learn how to setup/install it below.
 
